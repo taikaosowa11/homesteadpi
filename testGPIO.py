@@ -1,8 +1,8 @@
 """
 A GPIO sequence to test hardware
 
-Generally 200 steps per revolution: rn set to 1/32
-so 6400 steps per revolution
+Generally 200 steps per revolution: rn set to 1/2
+so 400 steps per revolution
 """
 
 import RPi.GPIO as GPIO
@@ -10,7 +10,7 @@ import time
 
 DIRPIN = 23
 STEPPIN = 24
-STEPSPERREVOLUTION = 6400
+STEPSPERREVOLUTION = 400
 
 
 def setup():
