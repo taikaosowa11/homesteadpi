@@ -25,9 +25,9 @@ def setup():
 def one_revolution():
     for i in range(STEPSPERREVOLUTION):
         GPIO.output(STEPPIN, 1)
-        time.sleep(.1)
+        time.sleep(.001)
         GPIO.output(STEPPIN, 0)
-        time.sleep(.1)
+        time.sleep(.001)
 
 
 if __name__ == '__main__':
