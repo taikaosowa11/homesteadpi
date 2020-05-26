@@ -8,9 +8,9 @@ so 400 steps per revolution
 import RPi.GPIO as GPIO
 import time
 
-DIRPIN = 23
-STEPPIN = 24
-STEPSPERREVOLUTION = 400
+DIRPIN =16 
+STEPPIN = 18
+STEPSPERREVOLUTION = 40 # test
 
 
 def setup():
@@ -19,15 +19,15 @@ def setup():
     GPIO.setup(STEPPIN, GPIO.OUT)
 
     # Set direction clockwise
-    GPIO.output(DIRPIN, 1)
+    GPIO.output(DIRPIN, GPIO.HIGH)
 
 
 def one_revolution():
     for i in range(STEPSPERREVOLUTION):
-        GPIO.output(STEPPIN, 1)
-        time.sleep(.001)
-        GPIO.output(STEPPIN, 0)
-        time.sleep(.001)
+        GPIO.output(STEPPIN, GPIO.HIGH)
+        time.sleep(2)
+        GPIO.output(STEPPIN, GPIO.LOW)
+        time.sleep(2)
 
 
 if __name__ == '__main__':
@@ -37,3 +37,5 @@ if __name__ == '__main__':
     one_revolution()
     print('Finished!')
     GPIO.cleanup()
+
+
