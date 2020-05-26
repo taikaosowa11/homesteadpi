@@ -38,11 +38,11 @@ class MotorDriver:
 
     def one_revolution_clockwise(self):
         GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
-        self._step(self.steps_per_rev, self.step_size)
+        self._step()
 
     def one_revolution_counterclockwise(self):
         GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
-        self._step(self.steps_per_rev, self.step_size)
+        self._step()
 
     """
     This is a bit ugly, but since we're using this as a pulley
