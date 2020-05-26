@@ -29,12 +29,12 @@ def step(numsteps: int, stepsize: float):
 
 def one_revolution_clockwise():
     GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
-    step(STEPSPERREVOLUTION, .005)
+    step(STEPSPERREVOLUTION, .001)
 
 
 def one_revolution_counterclockwise():
     GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
-    step(STEPSPERREVOLUTION, .005)
+    step(STEPSPERREVOLUTION, .001)
 
 
 if __name__ == '__main__':
@@ -44,8 +44,8 @@ if __name__ == '__main__':
         print('One clockwise rotation')
         one_revolution_clockwise()
         print('One counterclockwise rotation')
-        one_revolution_clockwise()
-        
+        one_revolution_counterclockwise()
+
     print('Finished!')
     GPIO.cleanup()
 
