@@ -10,7 +10,7 @@ import time
 
 DIRPIN =16 
 STEPPIN = 18
-STEPSPERREVOLUTION = 40 # test
+STEPSPERREVOLUTION = 400 # test
 
 
 def setup():
@@ -18,16 +18,16 @@ def setup():
     GPIO.setup(DIRPIN, GPIO.OUT)
     GPIO.setup(STEPPIN, GPIO.OUT)
 
+def one_revolution_clockwise():
+
     # Set direction clockwise
     GPIO.output(DIRPIN, GPIO.HIGH)
-
-
-def one_revolution():
+    
     for i in range(STEPSPERREVOLUTION):
         GPIO.output(STEPPIN, GPIO.HIGH)
-        time.sleep(2)
+        time.sleep(.01)
         GPIO.output(STEPPIN, GPIO.LOW)
-        time.sleep(2)
+        time.sleep(.01)
 
 
 if __name__ == '__main__':
