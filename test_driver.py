@@ -5,7 +5,7 @@ Generally 200 steps per revolution: rn set to 1/2
 so 400 steps per revolution
 """
 
-from .driver import MotorDriver
+from driver import MotorDriver
 
 STEPSPERREVOLUTION = 800
 STEPSIZE = .001
