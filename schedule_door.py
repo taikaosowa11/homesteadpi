@@ -9,8 +9,15 @@ Date: 6/6/20
 """
 import requests
 from datetime import datetime, timedelta
+from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
+from apscheduler.schedulers.background import BackgroundScheduler
+from driver import MotorDriver
 import pytz
-import os
+import time
+
+open_time = time.time()
+close_time = time.time()
+
 
 def get_sunrise_sunset():
     # Get Open Weather API data
@@ -32,20 +39,41 @@ def get_sunrise_sunset():
     post_sunset = sunset + timedelta(minutes=15)
 
     # Switch to local timezone
-    sunrise = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-    post_sunset = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-    return sunrise, post_sunset
+    global open_time
+    global close_time
+    open_time = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
+    close_time = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
+    print('Test 1 done!')
+
+
+def test():
+    print(open_time)
+    print('Test 2 done!')
+
+
+def listener(event):
+    if not event.exception:
+        job = scheduler.get_job(event.job_id)
+        if job.name and job.name == 'get_sunrise_sunset':
+            scheduler.add_job(MotorDriver.motor_open_door, 'date', open_time)
+            scheduler.add_job(MotorDriver.motor_close_door, 'date', close_time)
 
 
 if __name__ == '__main__':
 
-    open_time, close_time = get_sunrise_sunset()
-    sched_open = 'echo python3 /home/pi/homesteadpi/actuate_door.py open | at ' + open_time.strftime('%H:%M')
-    sched_close = 'echo python3 /home/pi/homesteadpi/actuate_door.py close | at ' + close_time.strftime('%H:%M')
-    os.system(sched_open)
-    os.system(sched_close)
+    scheduler = BackgroundScheduler()
+    scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 
-    import time
-    while True:
-        print('Waiting to press button...')
-        time.sleep(30)
+    # at 3 am every day, get sunrise and sunset
+    # make sure to run this code on boot as well
+    scheduler.add_job(get_sunrise_sunset, 'cron', hour='3')
+    scheduler.start()
+
+    try:
+        while True:
+            time.sleep(.5)
+            # Add GPIO code here
+
+    except (KeyboardInterrupt, SystemExit):
+        print('Scheduler shutting down')
+        scheduler.shutdown()

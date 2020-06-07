@@ -26,6 +26,7 @@ class MotorDriver:
     def __init__(self, steps_per_rev: int, step_size: float):
         self.steps_per_rev = steps_per_rev
         self.step_size = step_size
+        self.door_open = True
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIRPIN, GPIO.OUT)
         GPIO.setup(STEPPIN, GPIO.OUT)
@@ -52,10 +53,18 @@ class MotorDriver:
         self._step()
 
     def motor_open_door(self):
-        self.one_revolution_clockwise()
+        if not self.door_open:
+            self.one_revolution_clockwise()
+            self.door_open = True
+        else:
+            print('Door already open!')
 
     def motor_close_door(self):
-        self.one_revolution_counterclockwise()
+        if self.door_open:
+            self.one_revolution_counterclockwise()
+            self.door_open = False
+        else:
+            print('Door already closed!')
 
     def end(self):
         GPIO.cleanup()
