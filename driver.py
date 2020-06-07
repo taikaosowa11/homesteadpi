@@ -23,7 +23,7 @@ class MotorDriver:
     Stepsize determines how quickly the motor interates
     through steps. numsteps*stepsize*2 = seconds/revolution
     """
-    def __init__(self, steps_per_rev: int, step_size: float):
+    def __init__(self, steps_per_rev, step_size):
         self.steps_per_rev = steps_per_rev
         self.step_size = step_size
         self.door_open = True
@@ -31,10 +31,10 @@ class MotorDriver:
         GPIO.setup(DIRPIN, GPIO.OUT)
         GPIO.setup(STEPPIN, GPIO.OUT)
 
-    def set_step_size(self, step_size: int):
+    def set_step_size(self, step_size):
         self.step_size = step_size
 
-    def set_steps_per_rev(self, steps_per_rev: int):
+    def set_steps_per_rev(self, steps_per_rev):
         self.steps_per_rev = steps_per_rev
 
     def _step(self):
