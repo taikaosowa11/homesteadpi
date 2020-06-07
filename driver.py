@@ -7,6 +7,7 @@ control.
 
 import RPi.GPIO as GPIO
 import time
+from math import modf
 
 DIRPIN = 16
 STEPPIN = 18
@@ -45,33 +46,31 @@ class MotorDriver:
     def set_steps_per_rev(self, steps_per_rev):
         self.steps_per_rev = steps_per_rev
 
-    def _step(self):
-        for i in range(self.steps_per_rev):
+    def _step(self, revs):
+        for i in range(self.steps_per_rev * revs):
             GPIO.output(STEPPIN, GPIO.HIGH)
             time.sleep(self.step_size)
             GPIO.output(STEPPIN, GPIO.LOW)
             time.sleep(self.step_size)
 
-    def one_revolution_clockwise(self):
+    def revolutions_clockwise(self, revs):
         GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
-        self._step()
+        self._step(revs)
         
-    def one_revolution_counterclockwise(self):
+    def revolutions_counterclockwise(self, res):
         GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
-        self._step()
+        self._step(revs)
 
-    def motor_open_door(self):
+    def open_door(self):
         if not self.door_open:
-            for i in range(3):
-                self.one_revolution_clockwise()
+            self.revolutions_clockwise(3.5)
             self.door_open = True
         else:
             print('Door already open!')
 
-    def motor_close_door(self):
+    def close_door(self):
         if self.door_open:
-            for i in range(3):
-                self.one_revolution_counterclockwise()
+            self.revolutions_counterclockwise(3.5)
             self.door_open = False
         else:
             print('Door already closed!')
