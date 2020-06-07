@@ -24,7 +24,7 @@ through steps. numsteps*stepsize*2 = seconds/revolution
 
 steps_per_rev = 800
 step_size = .001
-door_open = False
+door_open = True
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(DIRPIN, GPIO.OUT)
 GPIO.setup(STEPPIN, GPIO.OUT)
