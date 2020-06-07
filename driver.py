@@ -12,68 +12,78 @@ from math import modf
 DIRPIN = 16
 STEPPIN = 18
 
+"""
+Numsteps = 200 * S1-S2-S3 setting
+For example, if the motor driver is set to ON OFF OFF
+then steps are split into four microsteps, and there
+are 800 steps in one rotation.
 
-class MotorDriver:
+Stepsize determines how quickly the motor interates
+through steps. numsteps*stepsize*2 = seconds/revolution
+"""
 
-    """
-    Numsteps = 200 * S1-S2-S3 setting
-    For example, if the motor driver is set to ON OFF OFF
-    then steps are split into four microsteps, and there
-    are 800 steps in one rotation.
+steps_per_rev = 800
+step_size = .001
+door_open = False
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(DIRPIN, GPIO.OUT)
+GPIO.setup(STEPPIN, GPIO.OUT)
 
-    Stepsize determines how quickly the motor interates
-    through steps. numsteps*stepsize*2 = seconds/revolution
-    """
-    def __init__(self, steps_per_rev, step_size):
-        self.steps_per_rev = steps_per_rev
-        self.step_size = step_size
-        self.door_open = False
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(DIRPIN, GPIO.OUT)
-        GPIO.setup(STEPPIN, GPIO.OUT)
 
-    def set_door_state(self, state):
-        if state == 'open':
-            self.door_open = True
-        elif state == 'closed':
-            self.door_open = False
-        else:
-            print('Passed an invalid door state!')
+def set_door_state(state):
+    global door_open
+    if state == 'open':
+        door_open = True
+    elif state == 'closed':
+        door_open = False
+    else:
+        print('Passed an invalid door state!')
 
-    def set_step_size(self, step_size):
-        self.step_size = step_size
 
-    def set_steps_per_rev(self, steps_per_rev):
-        self.steps_per_rev = steps_per_rev
+def set_step_size(s):
+    global step_size
+    step_size = s
 
-    def _step(self, revs):
-        for i in range(int(self.steps_per_rev * revs)):
-            GPIO.output(STEPPIN, GPIO.HIGH)
-            time.sleep(self.step_size)
-            GPIO.output(STEPPIN, GPIO.LOW)
-            time.sleep(self.step_size)
 
-    def revolutions_clockwise(self, revs):
-        GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
-        self._step(revs)
-        
-    def revolutions_counterclockwise(self, revs):
-        GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
-        self._step(revs)
+def set_steps_per_rev(s):
+    global steps_per_rev
+    steps_per_rev = s
 
-    def open_door(self):
-        if not self.door_open:
-            self.revolutions_clockwise(3.5)
-            self.door_open = True
-        else:
-            print('Door already open!')
 
-    def close_door(self):
-        if self.door_open:
-            self.revolutions_counterclockwise(3.5)
-            self.door_open = False
-        else:
-            print('Door already closed!')
+def _step(revs):
+    for i in range(int(steps_per_rev * revs)):
+        GPIO.output(STEPPIN, GPIO.HIGH)
+        time.sleep(step_size)
+        GPIO.output(STEPPIN, GPIO.LOW)
+        time.sleep(step_size)
 
-    def end(self):
-        GPIO.cleanup()
+
+def revolutions_clockwise(revs):
+    GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
+    _step(revs)
+
+
+def revolutions_counterclockwise(revs):
+    GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
+    _step(revs)
+
+
+def open_door():
+    global door_open
+    if not door_open:
+        revolutions_clockwise(3.5)
+        door_open = True
+    else:
+        print('Door already open!')
+
+
+def close_door():
+    global door_open
+    if door_open:
+        revolutions_counterclockwise(3.5)
+        door_open = False
+    else:
+        print('Door already closed!')
+
+def end():
+    GPIO.cleanup()

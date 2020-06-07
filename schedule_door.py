@@ -11,12 +11,12 @@ import requests
 from datetime import datetime, timedelta
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
 from apscheduler.schedulers.background import BackgroundScheduler
-from driver import MotorDriver
+import driver as dr
 import pytz
 import time
 
-open_time = time.time()
-close_time = time.time()
+open_time = ''
+close_time = ''
 
 
 def get_sunrise_sunset():
@@ -41,39 +41,43 @@ def get_sunrise_sunset():
     # Switch to local timezone
     global open_time
     global close_time
-    open_time = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-    close_time = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-    print('Test 1 done!')
-
-
-def test():
-    print(open_time)
-    print('Test 2 done!')
+    open_time = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles")).strftime("%H:%M:%S")
+    close_time = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles")).strftime("%H:%M:%S")
 
 
 def listener(event):
     if not event.exception:
         job = scheduler.get_job(event.job_id)
         if job.name and job.name == 'get_sunrise_sunset':
-            scheduler.add_job(MotorDriver.motor_open_door, 'date', open_time)
-            scheduler.add_job(MotorDriver.motor_close_door, 'date', close_time)
+            scheduler.add_job(dr.open_door, 'date', open_time, misfire_grace_time=2, coalesce=True)
+            scheduler.add_job(dr.close_door, 'date', close_time, misfire_grace_time=2, coalesce=True)
 
 
 if __name__ == '__main__':
-
+    print(get_sunrise_sunset())
     scheduler = BackgroundScheduler()
     scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 
     # at 3 am every day, get sunrise and sunset
     # make sure to run this code on boot as well
-    scheduler.add_job(get_sunrise_sunset, 'cron', hour='3')
+    scheduler.add_job(get_sunrise_sunset, 'cron', hour='3', misfire_grace_time=2, coalesce=True)
     scheduler.start()
 
-    try:
+    try: # Also, wait for button press!
         while True:
             time.sleep(.5)
-            # Add GPIO code here
 
     except (KeyboardInterrupt, SystemExit):
         print('Scheduler shutting down')
         scheduler.shutdown()
+
+"""
+
+    # GPIO setup
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    pinpir = 17
+    GPIO.setup(pinpir, GPIO.IN)
+    currentstate = 0
+    previousstate = 0
+"""
