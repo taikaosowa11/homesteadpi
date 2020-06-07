@@ -54,7 +54,7 @@ def listener(event):
 
 
 if __name__ == '__main__':
-    print(get_sunrise_sunset())
+    print('Starting!')
     scheduler = BackgroundScheduler()
     scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 

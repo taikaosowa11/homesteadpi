@@ -7,7 +7,6 @@ control.
 
 import RPi.GPIO as GPIO
 import time
-from math import modf
 
 DIRPIN = 16
 STEPPIN = 18
