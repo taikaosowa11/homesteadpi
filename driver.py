@@ -47,7 +47,7 @@ class MotorDriver:
         self.steps_per_rev = steps_per_rev
 
     def _step(self, revs):
-        for i in range(self.steps_per_rev * revs):
+        for i in range(int(self.steps_per_rev * revs)):
             GPIO.output(STEPPIN, GPIO.HIGH)
             time.sleep(self.step_size)
             GPIO.output(STEPPIN, GPIO.LOW)
