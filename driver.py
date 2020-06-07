@@ -26,7 +26,7 @@ class MotorDriver:
     def __init__(self, steps_per_rev, step_size):
         self.steps_per_rev = steps_per_rev
         self.step_size = step_size
-        self.door_open = True
+        self.door_open = False
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIRPIN, GPIO.OUT)
         GPIO.setup(STEPPIN, GPIO.OUT)
