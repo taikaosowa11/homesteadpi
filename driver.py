@@ -57,7 +57,7 @@ class MotorDriver:
         GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
         self._step(revs)
         
-    def revolutions_counterclockwise(self, res):
+    def revolutions_counterclockwise(self, revs):
         GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
         self._step(revs)
 
