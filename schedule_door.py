@@ -8,15 +8,9 @@ Author: Tai Kao-Sowa
 Date: 6/6/20
 """
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
-import sched
-import time
-from driver import MotorDriver
-
-STEPSPERREVOLUTION = 800
-STEPSIZE = .001
-
+import os
 
 def get_sunrise_sunset():
     # Get Open Weather API data
@@ -34,13 +28,24 @@ def get_sunrise_sunset():
     sunrise = datetime.utcfromtimestamp(data['current']['sunrise'])
     sunset = datetime.utcfromtimestamp(data['current']['sunset'])
 
+    # add 15 minutes to make sure the chickens are in the coop!
+    post_sunset = sunset + timedelta(minutes=15)
+
     # Switch to local timezone
     sunrise = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-    sunset = sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-    return sunrise, sunset
+    post_sunset = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
+    return sunrise, post_sunset
 
 
 if __name__ == '__main__':
-    driver = MotorDriver(STEPSPERREVOLUTION, STEPSIZE)
-    driver.motor_open_door()
-    driver.motor_close_door()
+
+    open_time, close_time = get_sunrise_sunset()
+    sched_open = 'echo python3 /home/pi/homesteadpi/actuate_door.py open | at ' + open_time.strftime('%H:%M')
+    sched_close = 'echo python3 /home/pi/homesteadpi/actuate_door.py close | at ' + close_time.strftime('%H:%M')
+    os.system(sched_open)
+    os.system(sched_close)
+
+    import time
+    while True:
+        print('Waiting to press button...')
+        time.sleep(30)
