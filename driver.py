@@ -31,6 +31,14 @@ class MotorDriver:
         GPIO.setup(DIRPIN, GPIO.OUT)
         GPIO.setup(STEPPIN, GPIO.OUT)
 
+    def set_door_state(self, state):
+        if state == 'open':
+            self.door_open = True
+        elif state == 'closed':
+            self.door_open = False
+        else:
+            print('Passed an invalid door state!')
+
     def set_step_size(self, step_size):
         self.step_size = step_size
 
