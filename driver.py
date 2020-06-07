@@ -54,14 +54,16 @@ class MotorDriver:
 
     def motor_open_door(self):
         if not self.door_open:
-            self.one_revolution_clockwise()
+            for i in range(10)
+                self.one_revolution_clockwise()
             self.door_open = True
         else:
             print('Door already open!')
 
     def motor_close_door(self):
         if self.door_open:
-            self.one_revolution_counterclockwise()
+            for i in range(10):
+                self.one_revolution_counterclockwise()
             self.door_open = False
         else:
             print('Door already closed!')
