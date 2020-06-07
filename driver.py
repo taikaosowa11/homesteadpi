@@ -36,6 +36,13 @@ class MotorDriver:
     def set_steps_per_rev(self, steps_per_rev: int):
         self.steps_per_rev = steps_per_rev
 
+    def _step(self):
+        for i in range(self.steps_per_rev):
+            GPIO.output(STEPPIN, GPIO.HIGH)
+            time.sleep(self.step_size)
+            GPIO.output(STEPPIN, GPIO.LOW)
+            time.sleep(self.step_size)
+
     def one_revolution_clockwise(self):
         GPIO.output(DIRPIN, GPIO.HIGH)  # Set direction clockwise
         self._step()
@@ -44,30 +51,11 @@ class MotorDriver:
         GPIO.output(DIRPIN, GPIO.LOW)  # Set direction clockwise
         self._step()
 
-    """
-    This is a bit ugly, but since we're using this as a pulley
-    it works for now. We might want to actually use the stepper
-    motor for sub-unit rotations in the future, and then this
-    will have to change.
-    """
-    def clockwise_for_time(self, dur: int):
-        sec_per_rev = self.steps_per_rev*self.step_size*2
-        num_revs = round(dur/sec_per_rev)
-        for i in range(num_revs):
-            self.one_revolution_clockwise()
+    def motor_open_door(self):
+        self.one_revolution_clockwise()
 
-    def counterclockwise_for_time(self, dur: int):
-        sec_per_rev = self.steps_per_rev*self.step_size*2
-        num_revs = round(dur/sec_per_rev)
-        for i in range(num_revs):
-            self.one_revolution_counterclockwise()
-
-    def _step(self):
-        for i in range(self.steps_per_rev):
-            GPIO.output(STEPPIN, GPIO.HIGH)
-            time.sleep(self.step_size)
-            GPIO.output(STEPPIN, GPIO.LOW)
-            time.sleep(self.step_size)
+    def motor_close_door(self):
+        self.one_revolution_counterclockwise()
 
     def end(self):
         GPIO.cleanup()

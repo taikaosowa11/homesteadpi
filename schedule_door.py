@@ -10,8 +10,12 @@ Date: 6/6/20
 import requests
 from datetime import datetime
 import pytz
-import schedule
+import sched
 import time
+from driver import MotorDriver
+
+STEPSPERREVOLUTION = 800
+STEPSIZE = .001
 
 
 def get_sunrise_sunset():
@@ -34,3 +38,9 @@ def get_sunrise_sunset():
     sunrise = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
     sunset = sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
     return sunrise, sunset
+
+
+if __name__ == '__main__':
+    driver = MotorDriver(STEPSPERREVOLUTION, STEPSIZE)
+    driver.motor_open_door()
+    driver.motor_close_door()
