@@ -24,6 +24,8 @@ through steps. numsteps*stepsize*2 = seconds/revolution
 steps_per_rev = 800
 step_size = .001
 door_open = True
+
+# Is this code ever ran? Just once at initialization?
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(DIRPIN, GPIO.OUT)
 GPIO.setup(STEPPIN, GPIO.OUT)
