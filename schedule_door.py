@@ -63,8 +63,9 @@ if __name__ == '__main__':
     scheduler.add_job(get_sunrise_sunset, 'cron', hour='3', misfire_grace_time=2, coalesce=True)
     scheduler.start()
 
-    try: # Also, wait for button press!
+    try:
         while True:
+             # Later, wait for button press/IFTTT input here
             time.sleep(.5)
 
     except (KeyboardInterrupt, SystemExit):
