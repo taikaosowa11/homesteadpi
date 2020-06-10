@@ -79,8 +79,9 @@ if __name__ == '__main__':
             time.sleep(.5)
 
     except (KeyboardInterrupt, SystemExit):
-        print('Scheduler shutting down')
+        print('Scheduler, GPIOs shutting down')
         scheduler.shutdown()
+        dr.end()
 
 """
 
