@@ -46,7 +46,7 @@ def get_sunrise_sunset():
     global close_time
     open_time = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
     close_time = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
-
+    print('Got sunrise and sunset+15: ', open_time, close_time)
 
 def listener(event):
     if not event.exception:
@@ -58,6 +58,7 @@ def listener(event):
 
 if __name__ == '__main__':
     print('Initializing GPIOs!')
+    GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(DIRPIN, GPIO.OUT)
     GPIO.setup(STEPPIN, GPIO.OUT)

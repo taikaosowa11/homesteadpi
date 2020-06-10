@@ -62,6 +62,7 @@ def revolutions_counterclockwise(revs):
 
 
 def open_door():
+    print('Opening door...')
     global door_open
     if not door_open:
         revolutions_clockwise(3.5)
@@ -71,6 +72,7 @@ def open_door():
 
 
 def close_door():
+    print('Closing door...')
     global door_open
     if door_open:
         revolutions_counterclockwise(3.5)
