@@ -7,6 +7,7 @@ for the homestead pi project. Accesses the Open Weather API.
 Author: Tai Kao-Sowa
 Date: 6/6/20
 """
+import RPi.GPIO as GPIO
 import requests
 from datetime import datetime, timedelta
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
@@ -17,6 +18,8 @@ import time
 
 open_time = ''
 close_time = ''
+DIRPIN = 16
+STEPPIN = 18
 
 
 def get_sunrise_sunset():
@@ -54,6 +57,11 @@ def listener(event):
 
 
 if __name__ == '__main__':
+    print('Initializing GPIOs!')
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(DIRPIN, GPIO.OUT)
+    GPIO.setup(STEPPIN, GPIO.OUT)
+
     print('Starting scheduler!')
     scheduler = BackgroundScheduler()
     scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
@@ -63,9 +71,10 @@ if __name__ == '__main__':
     scheduler.add_job(get_sunrise_sunset, 'cron', hour='3', misfire_grace_time=2, coalesce=True)
     scheduler.start()
 
+    print('Sit back, relax, and enjoy the show.')
     try:
         while True:
-             # Later, wait for button press/IFTTT input here
+            #  Later, wait for button press/IFTTT input here
             time.sleep(.5)
 
     except (KeyboardInterrupt, SystemExit):

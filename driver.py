@@ -8,9 +8,6 @@ control.
 import RPi.GPIO as GPIO
 import time
 
-DIRPIN = 16
-STEPPIN = 18
-
 """
 Numsteps = 200 * S1-S2-S3 setting
 For example, if the motor driver is set to ON OFF OFF
@@ -24,11 +21,6 @@ through steps. numsteps*stepsize*2 = seconds/revolution
 steps_per_rev = 800
 step_size = .001
 door_open = True
-
-# Is this code ever ran? Just once at initialization?
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(DIRPIN, GPIO.OUT)
-GPIO.setup(STEPPIN, GPIO.OUT)
 
 
 def set_door_state(state):
@@ -85,6 +77,7 @@ def close_door():
         door_open = False
     else:
         print('Door already closed!')
+
 
 def end():
     GPIO.cleanup()
