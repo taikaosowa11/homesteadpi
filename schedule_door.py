@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 """
 Code: schedule_door.py
 Description: Basic code that actuates chicken coop door at sunrise/sunset
