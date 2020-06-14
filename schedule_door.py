@@ -18,8 +18,6 @@ import time
 
 open_time = ''
 close_time = ''
-DIRPIN = 16
-STEPPIN = 18
 
 
 def get_sunrise_sunset():
