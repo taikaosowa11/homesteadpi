@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # at 3 am every day, get sunrise and sunset
     # make sure to run this code on boot as well
-    scheduler.add_job(get_sunrise_sunset, 'cron', hour='3', misfire_grace_time=2, coalesce=True)
+    scheduler.add_job(get_sunrise_sunset, 'cron', hour='17', minute='38', misfire_grace_time=2, coalesce=True)
     scheduler.start()
 
     print('Sit back, relax, and enjoy the show.')
