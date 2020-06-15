@@ -20,18 +20,19 @@ through steps. numsteps*stepsize*2 = seconds/revolution
 
 steps_per_rev = 800
 step_size = .001
-door_open = True
+door_open = False
 DIRPIN = 16
 STEPPIN = 18
 
-def set_door_state(state):
+
+def set_door_state_open():
     global door_open
-    if state == 'open':
-        door_open = True
-    elif state == 'closed':
-        door_open = False
-    else:
-        print('Passed an invalid door state!')
+    door_open = True
+
+
+def set_door_state_closed():
+    global door_open
+    door_open = False
 
 
 def set_step_size(s):
