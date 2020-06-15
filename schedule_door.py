@@ -72,7 +72,6 @@ if __name__ == '__main__':
     print('Setting up close time to 8 pm for initialized code')
     temp_close_time = datetime.now().replace(hour=17, minute=53, second=0, microsecond=0)
     scheduler.add_job(dr.close_door, 'date', run_date=temp_close_time, misfire_grace_time=2, coalesce=True)
-    print(close_time)
 
     # at 3 am every day, get sunrise and sunset
     # make sure to run this code on boot as well
