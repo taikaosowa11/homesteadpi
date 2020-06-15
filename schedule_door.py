@@ -45,14 +45,14 @@ def get_sunrise_sunset():
     open_time = sunrise.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
     close_time = post_sunset.replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles"))
     print('Got sunrise and sunset+15: ', open_time, close_time)
-
+    close_time = close_time - timedelta(hours=3)
 def listener(event):
     if not event.exception:
         job = scheduler.get_job(event.job_id)
         if job.name and job.name == 'get_sunrise_sunset':
-            scheduler.add_job(dr.open_door, 'date', run_date=open_time, misfire_grace_time=2, coalesce=True)
+            #scheduler.add_job(dr.open_door, 'date', run_date=open_time, misfire_grace_time=2, coalesce=True)
             scheduler.add_job(dr.close_door, 'date', run_date=close_time, misfire_grace_time=2, coalesce=True)
-
+            
 
 if __name__ == '__main__':
     print('Initializing GPIOs!')
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # at 3 am every day, get sunrise and sunset
     # make sure to run this code on boot as well
-    scheduler.add_job(get_sunrise_sunset, 'cron', hour='17', minute='38', misfire_grace_time=2, coalesce=True)
+    scheduler.add_job(get_sunrise_sunset, 'cron', hour='17', minute='40', misfire_grace_time=2, coalesce=True)
     scheduler.start()
 
     print('Sit back, relax, and enjoy the show.')
