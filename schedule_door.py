@@ -61,10 +61,6 @@ if __name__ == '__main__':
     GPIO.setup(dr.DIRPIN, GPIO.OUT)
     GPIO.setup(dr.STEPPIN, GPIO.OUT)
 
-    print('Testing!')
-    dr.close_door()
-    dr.open_door()
-
     print('Starting scheduler!')
     scheduler = BackgroundScheduler()
     scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
