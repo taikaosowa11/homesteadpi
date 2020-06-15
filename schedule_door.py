@@ -70,7 +70,7 @@ if __name__ == '__main__':
     scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 
     print('Setting up close time to 8 pm for initialized code')
-    temp_close_time = datetime.now().replace(hour=17, minute=55, second=0, microsecond=0)
+    temp_close_time = datetime.now().replace(hour=20, minute=0, second=0, microsecond=0)
     scheduler.add_job(dr.close_door, 'date', run_date=temp_close_time, misfire_grace_time=2, coalesce=True)
 
     # at 3 am every day, get sunrise and sunset
