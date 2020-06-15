@@ -14,8 +14,6 @@ if __name__ == '__main__':
     driver = MotorDriver(STEPSPERREVOLUTION, STEPSIZE)
     driver.one_revolution_clockwise()
     driver.one_revolution_counterclockwise()
-    driver.clockwise_for_time(10)
-    driver.counterclockwise_for_time(5)
     driver.end()
 
 

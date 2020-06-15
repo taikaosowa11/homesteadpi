@@ -1,0 +1,8 @@
+Initializing GPIOs!
+Starting scheduler!
+Sit back, relax, and enjoy the show.
+Scheduler shutting down
+Initializing GPIOs!
+Starting scheduler!
+Sit back, relax, and enjoy the show.
+Scheduler shutting down
