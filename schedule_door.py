@@ -58,8 +58,12 @@ if __name__ == '__main__':
     print('Initializing GPIOs!')
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(DIRPIN, GPIO.OUT)
-    GPIO.setup(STEPPIN, GPIO.OUT)
+    GPIO.setup(dr.DIRPIN, GPIO.OUT)
+    GPIO.setup(dr.STEPPIN, GPIO.OUT)
+
+    print('Testing!')
+    dr.close_door()
+    dr.open_door()
 
     print('Starting scheduler!')
     scheduler = BackgroundScheduler()
