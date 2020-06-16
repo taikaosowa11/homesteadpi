@@ -37,7 +37,7 @@ def get_sunrise_sunset():
     sunset = datetime.utcfromtimestamp(data['current']['sunset'])
 
     # add 15 minutes to make sure the chickens are in the coop!
-    post_sunset = sunset + timedelta(minutes=15)
+    post_sunset = sunset + timedelta(minutes=30)
 
     # Switch to local timezone
     global open_time
