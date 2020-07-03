@@ -36,7 +36,7 @@ def get_sunrise_sunset():
     sunrise = datetime.utcfromtimestamp(data['current']['sunrise'])
     sunset = datetime.utcfromtimestamp(data['current']['sunset'])
 
-    # add 15 minutes to make sure the chickens are in the coop!
+    # add 30 minutes to make sure the chickens are in the coop!
     post_sunset = sunset + timedelta(minutes=30)
 
     # Switch to local timezone
@@ -69,8 +69,8 @@ if __name__ == '__main__':
     scheduler = BackgroundScheduler()
     scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 
-    print('Setting up close time to 8 pm for initialized code')
-    temp_close_time = datetime.now().replace(hour=20, minute=0, second=0, microsecond=0)
+    print('Setting up close time to 9 pm for initialized code')
+    temp_close_time = datetime.now().replace(hour=21, minute=0, second=0, microsecond=0)
     scheduler.add_job(dr.close_door, 'date', run_date=temp_close_time, misfire_grace_time=2, coalesce=True)
 
     # at 3 am every day, get sunrise and sunset
