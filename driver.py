@@ -67,7 +67,7 @@ def open_door():
     print('Opening door...')
     global door_open
     if not door_open:
-        revolutions_clockwise(3.5)
+        revolutions_counterclockwise(3.5)
         door_open = True
     else:
         print('Door already open!')
@@ -77,7 +77,7 @@ def close_door():
     print('Closing door...')
     global door_open
     if door_open:
-        revolutions_counterclockwise(3.5)
+        revolutions_clockwise(3.5)
         door_open = False
     else:
         print('Door already closed!')
